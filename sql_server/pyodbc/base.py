@@ -242,6 +242,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         user = conn_params.get('USER', None)
         password = conn_params.get('PASSWORD', None)
         port = conn_params.get('PORT', None)
+        attrs_before = conn_params.get('ATTRS_BEFORE', None)
 
         options = conn_params.get('OPTIONS', {})
         driver = options.get('driver', 'ODBC Driver 13 for SQL Server')
@@ -280,6 +281,8 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         if user:
             cstr_parts['UID'] = user
             cstr_parts['PWD'] = password
+        elif attrs_before:
+            cstr_parts['attrs_before'] = attrs_before
         else:
             if ms_drivers.match(driver):
                 cstr_parts['Trusted_Connection'] = 'yes'
