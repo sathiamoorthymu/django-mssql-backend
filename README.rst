@@ -29,9 +29,9 @@ Installation
 
 1. Install pyodbc and Django
 
-2. Install django-mssql-backend ::
+2. Install django-mssql-azure-backend ::
 
-    pip install django-mssql-backend
+    pip install django-mssql-azure-backend
 
 3. Now you can point the ``ENGINE`` setting in the settings file used by
    your Django application or project to the ``'sql_server.pyodbc'``
@@ -219,6 +219,23 @@ Here is an example of the database settings:
             'HOST': 'myserver.database.windows.net',
             'PORT': '',
 
+            'OPTIONS': {
+                'driver': 'ODBC Driver 13 for SQL Server',
+            },
+        },
+    }
+
+OR
+
+::
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'sql_server.pyodbc',
+            'NAME': 'mydb',
+            'HOST': 'myserver.database.windows.net',
+            'PORT': '',
+            'attrs_before': dict
             'OPTIONS': {
                 'driver': 'ODBC Driver 13 for SQL Server',
             },
