@@ -21,7 +21,7 @@ setup(
     long_description=open('README.rst').read(),
     author='Sathiamoorthy M',
     author_email='shakthifuture@gmail.com',
-    url='https://github.com/ESSolutions/django-mssql-backend',
+    url='https://github.com/shakthifuture/django-mssql-azure-backend',
     license='BSD',
     packages=find_packages(),
     install_requires=[

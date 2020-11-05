@@ -1,11 +1,11 @@
-django-mssql-backend
-====================
+django-mssql-azure-backend
+==========================
 
 .. image:: https://img.shields.io/pypi/v/django-mssql-backend.svg
    :target: https://pypi.python.org/pypi/django-mssql-backend
 
-*django-mssql-backend* is a fork of
-`django-pyodbc-azure <https://pypi.org/project/django-pyodbc-azure/>`__
+*django-mssql-azure-backend* is a fork of
+`django-mssql-backend <https://github.com/ESSolutions/django-mssql-backend>`__
 
 Features
 --------
