@@ -81,6 +81,11 @@ in DATABASES control the behavior of the backend:
 
    String. Database user password.
 
+-  IS_AZURE_BASED_TOKEN
+
+   Boolean. Set this to True if you want to connect azure DB without userid and password
+   if it false or not given, DB will connect using userid and password
+
 -  AUTOCOMMIT
 
    Boolean. Set this to False if you want to disable
@@ -218,6 +223,7 @@ Here is an example of the database settings:
             'PASSWORD': 'password',
             'HOST': 'myserver.database.windows.net',
             'PORT': '',
+            'IS_AZURE_BASED_TOKEN': False
 
             'OPTIONS': {
                 'driver': 'ODBC Driver 13 for SQL Server',
@@ -235,7 +241,7 @@ OR
             'NAME': 'mydb',
             'HOST': 'myserver.database.windows.net',
             'PORT': '',
-            'attrs_before': dict
+            'IS_AZURE_BASED_TOKEN': True
             'OPTIONS': {
                 'driver': 'ODBC Driver 13 for SQL Server',
             },

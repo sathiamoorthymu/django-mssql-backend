@@ -3,8 +3,10 @@ MS SQL Server database backend for Django.
 """
 import os
 import re
+import struct
 import time
 
+import requests
 from django.core.exceptions import ImproperlyConfigured
 
 try:
@@ -242,7 +244,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         user = conn_params.get('USER', None)
         password = conn_params.get('PASSWORD', None)
         port = conn_params.get('PORT', None)
-        attrs_before = conn_params.get('ATTRS_BEFORE', None)
+        is_azure_based_token = conn_params.get('IS_AZURE_BASED_TOKEN', None)
 
         options = conn_params.get('OPTIONS', {})
         driver = options.get('driver', 'ODBC Driver 13 for SQL Server')
@@ -278,11 +280,17 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             else:
                 cstr_parts['SERVERNAME'] = host
 
-        if user:
+        if is_azure_based_token is not None and is_azure_based_token is True:
+            access_token = bytes(self.get_bearer_token("https://database.windows.net/"), 'utf-8')
+            exp_token = b""
+            for i in access_token:
+                exp_token += bytes({i})
+                exp_token += bytes(1)
+            token_struct = struct.pack("=i", len(exp_token)) + exp_token
+            cstr_parts['attrs_before'] = {1256: bytearray(token_struct)}
+        elif user:
             cstr_parts['UID'] = user
             cstr_parts['PWD'] = password
-        elif attrs_before:
-            cstr_parts['attrs_before'] = attrs_before
         else:
             if ms_drivers.match(driver):
                 cstr_parts['Trusted_Connection'] = 'yes'
@@ -331,6 +339,17 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
         conn.timeout = query_timeout
         return conn
+
+    def get_bearer_token(self, resource_uri):
+        identity_endpoint = os.environ["IDENTITY_ENDPOINT"]
+        identity_header = os.environ["IDENTITY_HEADER"]
+        token_auth_uri = f"{identity_endpoint}?resource={resource_uri}&api-version=2019-08-01"
+        head_msi = {'X-IDENTITY-HEADER': identity_header}
+
+        resp = requests.get(token_auth_uri, headers=head_msi)
+        access_token = resp.json()['access_token']
+
+        return access_token
 
     def init_connection_state(self):
         drv_name = self.connection.getinfo(Database.SQL_DRIVER_NAME).upper()
