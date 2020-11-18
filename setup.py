@@ -26,6 +26,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pyodbc>=3.0',
+        'requests>=2.24.0'
     ],
     package_data={'sql_server.pyodbc': ['regex_clr.dll']},
     classifiers=CLASSIFIERS,
