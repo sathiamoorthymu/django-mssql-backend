@@ -231,7 +231,7 @@ Here is an example of the database settings:
         },
     }
 
-OR
+If you are using a local SQL server, use this configuration.
 
 ::
 
