@@ -211,7 +211,24 @@ The following project-level settings also control the behavior of the backend:
 Example
 ~~~~~~~
 
-Here is an example of the database settings:
+Here is an example of the database settings for **azure token**:
+
+::
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'sql_server.pyodbc',
+            'NAME': 'mydb',
+            'HOST': 'myserver.database.windows.net',
+            'PORT': '',
+            'IS_AZURE_BASED_TOKEN': True
+            'OPTIONS': {
+                'driver': 'ODBC Driver 13 for SQL Server',
+            },
+        },
+    }
+
+If you are using a **local SQL server**, use the below configuration.
 
 ::
 
@@ -225,23 +242,6 @@ Here is an example of the database settings:
             'PORT': '',
             'IS_AZURE_BASED_TOKEN': False
 
-            'OPTIONS': {
-                'driver': 'ODBC Driver 13 for SQL Server',
-            },
-        },
-    }
-
-If you are using a local SQL server, use this configuration.
-
-::
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'sql_server.pyodbc',
-            'NAME': 'mydb',
-            'HOST': 'myserver.database.windows.net',
-            'PORT': '',
-            'IS_AZURE_BASED_TOKEN': True
             'OPTIONS': {
                 'driver': 'ODBC Driver 13 for SQL Server',
             },
